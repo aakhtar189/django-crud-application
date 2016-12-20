@@ -1,2 +1,2 @@
-# django-crud1
+# django-crud-application
 simple crud application based on django
