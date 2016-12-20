@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block javascript %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-tagsinput.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-tagsinput-typeahead.css' %}">
+    <script src="{% static 'js/bloodhound.min.js' %}" ></script>
+    <script src="{% static 'js/bootstrap-typeahead.js' %}"></script>
+    <script src="{% static 'js/bootstrap-tagsinput.js' %}"></script>
+    <script src="{% static 'js/jquery.jtruncate.js' %}"></script>
+    <script type="text/javascript">
+
+        var deleted_id = '';
+
+        function delete_notify(student_id){
+            $("#id_delete_confirm").attr("onclick", "delete_student(" + student_id + ")");
+            $("#id_delete_message").text("Do you really want to delete this Student?");
+            $("#id_delete_modal").modal("show");
+        };
+        function delete_student(student_id){
+            $.ajax({
+                url: Window.base.urls.delete_student+"?student_id="+student_id,
+                type: "GET",
+                success: function(response){
+                    response = JSON.parse(response);
+
+                    if(response.status){
+                        debugger;
+                        deleted_id = response.student_deleted.id;
+                        $("#id_student_"+deleted_id).remove();
+                        $("#id_delete_modal").modal("hide");
+                    }
+                }
+            });
+            return false;
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 paddingtop-20 profile-block">
+                <h3><center><strong>Student List</strong></center></h3>
+                <a href="{% url 'create_student' %}" id="add_student" class="btn btn-default btn-sm pull-right" style="background-color: #2C3E50; margin-top:-40px;">
+                    <span class="glyphicon glyphicon-plus" style="color: white;"></span> Add
+                </a>
+                <br>
+                <br>
+                <form method="GET" action="" id="id_student_search">
+                    <div class="form-group">
+                        <div class="es-form-control">
+                            <span class="glyphicon glyphicon-search"></span>
+                            <input type="text" class="studentnameinput" name="q" id="id_studentquery" value="{{ query }}" placeholder="Search Students" autocomplete="off" style="width:80%;">
+                        </div>
+                    </div>
+                </form>
+                {% if students %}
+                    <table class="table">
+                        <thead class="thead-default">
+                            <tr style="height: 50px;">
+                                <th><strong>#</strong></th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Gender</th>
+                                <th>Nationality</th>
+                                <th>Country</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr id="id_student_{{ student.id }}">
+                                <th class="col-md-1 gap" scope="row">{{ forloop.counter }}</th>
+                                <td class="col-md-2 gap">
+                                    <a href="{% url 'profile' student.user.username %}" style="text-decoration:none; color:blue;">{{ student.user.get_full_name }}</a>
+                                </td>
+                                <td class="col-md-2 gap">{{ student.user.email }}</td>
+                                <td class="col-md-3 gap">{{ student.address }}</td>
+                                <td class="col-md-1 gap">{{ student.gender }}</td>
+                                <td class="col-md-1 gap">{{ student.nationality }}</td>
+                                <td class="col-md-1 gap">{{ student.get_country_display }}</td>
+                                <td class="col-md-1 gap">
+        							<a href="{% url 'edit_student' student.user.username %}" style="cursor:pointer;"><span class="glyphicon glyphicon-pencil" style="color:skyblue"></span></a>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="cursor:pointer;" onclick="delete_notify('{{ student.id }}');"><span class="glyphicon glyphicon-trash" style="color:red"></span></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="text-muted text-center">No student found.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- Delete Modal -->
+    <div id="id_delete_modal" class="modal fade" tabindex="-1" role="dialog">
+       <div class="modal-dialog" role="document">
+          <div class="modal-content">
+             <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Notification</h4>
+             </div>
+             <div class="modal-body">
+                <p id="id_delete_message"></p>
+             </div>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="id_delete_confirm" type="button" class="btn btn-primary">Delete</button>
+             </div>
+          </div>
+          <!-- /.modal-content -->
+       </div>
+       <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="row" style="margin-top: -10px;">
+                <div class="col-sm-3" >
+                    <div class="profile-block">
+                        <div class="thumbnail">
+                            <img src="{% if student.avatar %}{{ student.avatar.url }}
+                            {% else %}{% static 'images/nodp.jpg' %}{% endif %}"
+                            alt="{{ student.user.get_full_name }}" style="height: 200px; width: 240px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class = "profile-block" style="text-align:center;">
+                        <p style="font-size:25px;"><a style="text-decoration:none;">{{ student.user.get_full_name }}</a></p>
+                        {% if student.nationality %}
+                            <p><b>Nationality:</b> &nbsp;{{ student.nationality }}</p>
+                        {% endif %}
+                        {% if student.country %}
+                            <p><b>Country:</b> &nbsp;{{ student.country.name }}</p>
+                        {% endif %}
+                        {% if student.country %}
+                            <p><b>Gender:</b> &nbsp;{{ student.gender }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+
+	<script type="text/javascript">
+
+    </script>
+
+{% endblock %}

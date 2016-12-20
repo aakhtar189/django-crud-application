@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="container" style="width:50%">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background-color: #2C3E50">
+                    <h3 class="panel-title" style="color: white;">Edit Profile</h3>
+                </div>
+                <form class="form-horizontal" role="form" data-toggle="validator" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body" style="margin-top: -10px;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group {% if form.first_name.errors %}has-error{% endif %}" style="margin-bottom: -10px;">
+                                            <div class="col-md-12">
+                                                <label for="id_first_name" class="control-label">*First Name:</label>
+                                                {{ form.first_name }}
+                                                <small class="error">{{ form.first_name.errors.as_text }}</small>
+                                                <small class="help-block with-errors"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group {% if form.last_name.errors %}has-error{% endif %}">
+                                            <div class="col-md-12">
+                                                <label for="id_last_name" class="control-label">*Last Name:</label>
+                                                {{ form.last_name }}
+                                                <small class="error">{{ form.last_name.errors.as_text }}</small>
+                                                <small class="help-block with-errors"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group {% if form.email.errors %}has-error{% endif %}" style="margin-top: -20px;">
+                                            <div class="col-md-12" >
+                                                <label for="id_email" class="control-label">*Email:</label>
+                                                {{ form.email }}
+                                                <small class="error">{{ form.email.errors.as_text }}</small>
+                                                <small class="help-block with-errors"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group {% if form.gender.errors %}has-error{% endif %}" style="margin-top: -20px;">
+                                            <div class="col-md-12" >
+                                                <label for="id_gender" class="control-label">Gender:</label>
+                                                {{ form.gender }}
+                                                <small class="error">{{ form.gender.errors.as_text }}</small>
+                                                <small class="help-block with-errors"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group {% if form.address.errors %}has-error{% endif %}" style="margin-top: -20px;">
+                                            <div class="col-md-12" >
+                                                <label for="id_address" class="control-label">Address:</label>
+                                                {{ form.address }}
+                                                <small class="error">{{ form.address.errors.as_text }}</small>
+                                                <small class="help-block with-errors"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group" style="margin-top: -20px;">
+                                            <div class="col-md-12">
+                                                <label for="id_country" class="control-label">Country:</label>
+                                                {{ form.country }}
+                                                {{ form.country.errors.as_text }}
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                	<div class="col-md-12">
+                                        <div class="form-group" style="margin-top: -20px;">
+                                            <div class="col-md-12">
+                                                <label for="id_nationality" class="control-label">Nationality:</label>
+                                                {{ form.nationality }}
+                                                {{ form.nationality.errors.as_text }}
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group" style="margin-top: -20px; margin-bottom: -10px;">
+                                            <div class="col-md-12">
+                                                <label for="id_avatar" class="control-label" style="cursor: pointer;">Avatar:</label>
+                                                <div class="thumbnail" style="width: 100px; cursor: pointer;">
+                                                    <div id="id_avatar_img" class="thubmnail-inner img-rounded">
+                                                        <img src="{% if student.avatar %}{{ student.avatar.url }}{% else %}{% static 'images/nodp.jpg' %}{% endif %}" class="" alt="Cinque Terre">
+                                                    </div>
+                                                </div>
+                                                {{ form.avatar }}
+                                                {{ form.avatar.errors.as_text }}
+                                                <small class="help-block with-errors"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input class="btn btn-primary btn-sm" type="submit" value="Save"/ style="width: 80px; margin-left: 15px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-tagsinput.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-tagsinput-typeahead.css' %}">
+    <script src="{% static 'js/bloodhound.min.js' %}" ></script>
+    <script src="{% static 'js/bootstrap-typeahead.js' %}"></script>
+    <script src="{% static 'js/bootstrap-tagsinput.js' %}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $("#id_avatar").on('change', function () {
+                var image_holder = $("#id_avatar_img");
+                image_holder.empty();
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("<img />", {
+                        "src": e.target.result
+                    }).appendTo(image_holder);
+
+                }
+                image_holder.show();
+                reader.readAsDataURL($(this)[0].files[0]);
+            });
+
+            $("#id_avatar").css("display", "none");
+            $("#id_avatar_img").on("click", function(){
+                $("#id_avatar").trigger("click");
+            })
+
+        })
+    </script>
+{% endblock %}
